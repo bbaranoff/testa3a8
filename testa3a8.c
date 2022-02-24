@@ -46,6 +46,7 @@ typedef unsigned char Byte;
 #include <stdlib.h>
 #include <ctype.h>
 #include <time.h>       // for time()
+#include "rand.h"
 /* #define TEST */
  
 /*
@@ -263,6 +264,8 @@ int main(int argc, char **argv)
 		rand[i] = (hextoint(argv[2][2*i+2])<<4)
 			 | hextoint(argv[2][2*i+3]);
 while ( 1 == 1){
+/*
+
 key[15]++;
 if ( key[15] == 0xFF ) {
 key[14]++;
@@ -286,6 +289,7 @@ if (( key[14] == 0xFF ) & (key[15] == 0xFF) & (key [13] == 0xFF) & (key [12] == 
 key[8]++;
 }
 if (( key[14] == 0xFF ) & (key[15] == 0xFF) & (key [13] == 0xFF) & (key [12] == 0xFF) & (key [11] == 0xFF) & (key [10] == 0xFF) & (key [9] == 0xFF) & (key [8] == 0xFF)) {
+
 key[7]++;
 }
 if (( key[14] == 0xFF ) & (key[15] == 0xFF) & (key [13] == 0xFF) & (key [12] == 0xFF) & (key [11] == 0xFF) & (key [10] == 0xFF) & (key [9] == 0xFF) & (key [8] == 0xFF) & (key [7] == 0xFF)) {
@@ -309,19 +313,34 @@ key[1]++;
 if (( key[14] == 0xFF ) & (key[15] == 0xFF) & (key [13] == 0xFF) & (key [12] == 0xFF) & (key [11] == 0xFF) & (key [10] == 0xFF) & (key [9] == 0xFF) & (key [8] == 0xFF) & (key [7] == 0xFF)  & (key [6] == 0xFF)  & (key [5] == 0xFF) & (key [4] == 0xFF)& (key [3] == 0xFF) & (key [2] == 0xFF) & (key [1] == 0xFF)) {
 key[0]++;
 }
+*/
 
+uint8_t buf1[16];
+uint8_t buf2[16];
+
+memcpy(key,rand_byte(buf1),sizeof(key));
+uint8_t *rand=rand_byte(buf2);
 
 
 	crack(rand, key , simoutput);
-	for (i=0; i<4; i++)
+if (simoutput[0] == 0x00 & simoutput[1] == 0x00 & simoutput[2] == 0x00)
+{
+
+	for (i=0; i<12; i++)
 		printf("%02X", simoutput[i]);
 	printf(" ");
 	for (i=0; i<16; i++)
 		printf("%02X", key[i]);
-	printf("\n");
+	printf(" ");
+        for (i=0; i<16; i++)
+                printf("%02X", rand[i]);
+        printf("\n");
+
 //    	time_t end = time(NULL);
 
+
 //	printf("The elapsed time is %ld seconds", (end - begin));
+}
 }
 	return 0;
 }
